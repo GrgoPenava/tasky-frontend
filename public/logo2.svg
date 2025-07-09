@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1080" height="1080" viewBox="0 0 1080 1080" xml:space="preserve">
+<desc>Created with Fabric.js 5.2.4</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 540 540)" id="dea7ac2f-78bf-4ad7-810c-a1ca056b7f96"  >
+</g>
+<g transform="matrix(1 0 0 1 540 540)" id="98f34b21-bbd8-41c4-824a-19cea92b79f4"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
+</g>
+<g transform="matrix(16.88 0 0 16.88 540.16 540.16)"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(99,102,241); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  x="-32" y="-32" rx="16" ry="16" width="64" height="64" />
+</g>
+<g transform="matrix(16.88 0 0 16.88 409.08 286.89)"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  x="-16" y="-3" rx="3" ry="3" width="32" height="6" />
+</g>
+<g transform="matrix(16.88 0 0 16.88 409.03 590.7)"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  x="-5" y="-15" rx="3" ry="3" width="10" height="30" />
+</g>
+<g transform="matrix(16.88 0 0 16.88 767.56 607.42)"  >
+<path style="stroke: rgb(255,255,255); stroke-width: 23; stroke-dasharray: none; stroke-linecap: round; stroke-dashoffset: 0; stroke-linejoin: round; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-32, -33)" d="M 20 36 L 26 42 L 44 24" stroke-linecap="round" />
+</g>
+</svg>

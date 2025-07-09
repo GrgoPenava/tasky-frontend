@@ -1,0 +1,1633 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Manager API",
+    "version": "1.0.0",
+    "description": "API dokumentacija za Task Manager aplikaciju",
+    "contact": {
+      "name": "Grgo Penava"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Automatski generirani ID korisnika"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email korisnika"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Ime korisnika"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Prezime korisnika"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme kreiranja korisnika"
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID notifikacije"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID korisnika kojem pripada notifikacija"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tip notifikacije (team_invite, invite_accepted, itd.)"
+          },
+          "message": {
+            "type": "string",
+            "description": "Poruka notifikacije"
+          },
+          "relatedId": {
+            "type": "string",
+            "description": "ID povezanog entiteta (tim, pozivnica, itd.)"
+          },
+          "isRead": {
+            "type": "boolean",
+            "description": "Označava je li notifikacija pročitana"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme kreiranja notifikacije"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "ID korisnika koji je kreirao notifikaciju"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "required": ["title", "teamId"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Automatski generirani ID zadatka"
+          },
+          "title": {
+            "type": "string",
+            "description": "Naslov zadatka"
+          },
+          "description": {
+            "type": "string",
+            "description": "Opis zadatka"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Bilješke za zadatak"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "in_progress", "done"],
+            "description": "Status zadatka"
+          },
+          "priority": {
+            "type": "integer",
+            "description": "Prioritet zadatka (1-5, gdje je 1 najniži)"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Rok izvršenja zadatka"
+          },
+          "teamId": {
+            "type": "string",
+            "description": "ID tima kojem pripada zadatak"
+          },
+          "assignedTo": {
+            "type": "string",
+            "description": "ID korisnika kojem je zadatak dodijeljen"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "ID korisnika koji je kreirao zadatak"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme kreiranja zadatka"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme zadnjeg ažuriranja zadatka"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme kad je zadatak označen kao završen"
+          }
+        }
+      },
+      "TaskComment": {
+        "type": "object",
+        "required": ["taskId", "content"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Automatski generirani ID komentara"
+          },
+          "taskId": {
+            "type": "string",
+            "description": "ID zadatka na koji se odnosi komentar"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID korisnika koji je dodao komentar"
+          },
+          "content": {
+            "type": "string",
+            "description": "Sadržaj komentara"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme kreiranja komentara"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme zadnjeg ažuriranja komentara"
+          }
+        }
+      },
+      "TaskHistory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Automatski generirani ID zapisa povijesti"
+          },
+          "taskId": {
+            "type": "string",
+            "description": "ID zadatka na koji se odnosi zapis povijesti"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID korisnika koji je napravio promjenu"
+          },
+          "fieldChanged": {
+            "type": "string",
+            "description": "Naziv polja koje je promijenjeno"
+          },
+          "oldValue": {
+            "type": "string",
+            "description": "Stara vrijednost polja"
+          },
+          "newValue": {
+            "type": "string",
+            "description": "Nova vrijednost polja"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme kada je promjena napravljena"
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Automatski generirani ID tima"
+          },
+          "name": {
+            "type": "string",
+            "description": "Naziv tima"
+          },
+          "description": {
+            "type": "string",
+            "description": "Opis tima"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "ID vlasnika tima"
+          },
+          "isPersonal": {
+            "type": "boolean",
+            "description": "Označava je li tim osobni"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme kreiranja tima"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme zadnjeg ažuriranja tima"
+          }
+        }
+      },
+      "TeamMember": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID članstva"
+          },
+          "teamId": {
+            "type": "string",
+            "description": "ID tima"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ID korisnika"
+          },
+          "role": {
+            "type": "string",
+            "description": "Uloga korisnika u timu (owner, admin, member)"
+          },
+          "joinedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Datum i vrijeme pridruživanja timu"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Registracija novog korisnika",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Korisnik uspješno registriran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nedostaju obavezna polja ili email već postoji"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Prijava korisnika",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Korisnik uspješno prijavljen",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Pogrešni korisnički podaci"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Odjava korisnika",
+        "tags": ["Authentication"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Korisnik uspješno odjavljen"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Dohvati trenutnog korisnika",
+        "tags": ["Authentication"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Podaci o trenutnom korisniku",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/auth/initialize": {
+      "post": {
+        "summary": "Inicijalizacija korisnika nakon Supabase autentikacije",
+        "tags": ["Authentication"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Korisnik uspješno inicijaliziran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "summary": "Dohvati sve notifikacije za korisnika",
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista notifikacija",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/notifications/{id}/read": {
+      "put": {
+        "summary": "Označi notifikaciju kao pročitanu",
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID notifikacije"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notifikacija označena kao pročitana",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Nemate pristup ovoj notifikaciji"
+          },
+          "404": {
+            "description": "Notifikacija nije pronađena"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/notifications/{id}/accept-invite": {
+      "post": {
+        "summary": "Prihvati pozivnicu u tim",
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID notifikacije"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pozivnica prihvaćena"
+          },
+          "400": {
+            "description": "Ovo nije pozivnica u tim ili je već obrađena"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Nemate pristup ovoj notifikaciji"
+          },
+          "404": {
+            "description": "Notifikacija ili pozivnica nije pronađena"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/notifications/{id}/reject-invite": {
+      "post": {
+        "summary": "Odbij pozivnicu u tim",
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID notifikacije"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pozivnica odbijena"
+          },
+          "400": {
+            "description": "Ovo nije pozivnica u tim ili je već obrađena"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Nemate pristup ovoj notifikaciji"
+          },
+          "404": {
+            "description": "Notifikacija ili pozivnica nije pronađena"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/notifications/{id}": {
+      "delete": {
+        "summary": "Obriši notifikaciju",
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID notifikacije"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notifikacija obrisana"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Nemate pristup ovoj notifikaciji"
+          },
+          "404": {
+            "description": "Notifikacija nije pronađena"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/tasks/team/{teamId}": {
+      "get": {
+        "summary": "Dohvati sve zadatke za tim",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID tima za koji se dohvaćaju zadaci"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista zadataka",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Task"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Korisnik nije član tima"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "summary": "Dohvati zadatak po ID-u",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID zadatka"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalji zadatka s komentarima",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Task"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "comments": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/TaskComment"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Korisnik nema pristup zadatku"
+          },
+          "404": {
+            "description": "Zadatak nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      },
+      "put": {
+        "summary": "Ažuriraj zadatak (potpuno)",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID zadatka"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "dueDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "assignedTo": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["todo", "in_progress", "done"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Zadatak uspješno ažuriran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nedostaju obavezna polja ili pogrešan format"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Korisnik nema pristup zadatku"
+          },
+          "404": {
+            "description": "Zadatak nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Djelomično ažuriranje zadatka",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID zadatka"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "dueDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "assignedTo": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["todo", "in_progress", "done"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Zadatak uspješno ažuriran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Potrebno je poslati barem jedno polje za ažuriranje"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Korisnik nema pristup zadatku"
+          },
+          "404": {
+            "description": "Zadatak nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Obriši zadatak",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID zadatka"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Zadatak uspješno obrisan"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Korisnik nema dozvolu za brisanje zadatka"
+          },
+          "404": {
+            "description": "Zadatak nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "post": {
+        "summary": "Kreiraj novi zadatak",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "teamId"],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "teamId": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "dueDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "assignedTo": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["todo", "in_progress", "done"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Zadatak uspješno kreiran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nedostaju obavezna polja ili pogrešan format"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Korisnik nije član tima"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/tasks/comment": {
+      "post": {
+        "summary": "Dodaj komentar na zadatak",
+        "tags": ["Task Comments"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["taskId", "content"],
+                "properties": {
+                  "taskId": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Komentar uspješno dodan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskComment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nedostaju obavezna polja"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Korisnik nema pristup zadatku"
+          },
+          "404": {
+            "description": "Zadatak nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/tasks/{id}/history": {
+      "get": {
+        "summary": "Dohvati povijest promjena zadatka",
+        "tags": ["Task History"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID zadatka"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Povijest promjena zadatka",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskHistory"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Korisnik nema pristup zadatku"
+          },
+          "404": {
+            "description": "Zadatak nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/teams": {
+      "get": {
+        "summary": "Dohvati sve timove korisnika",
+        "tags": ["Teams"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista timova",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      },
+      "post": {
+        "summary": "Kreiraj novi tim",
+        "tags": ["Teams"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "isPersonal": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tim uspješno kreiran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nedostaju obavezna polja"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/teams/{id}": {
+      "get": {
+        "summary": "Dohvati tim po ID-u",
+        "tags": ["Teams"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID tima"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalji tima",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Korisnik nema pristup timu"
+          },
+          "404": {
+            "description": "Tim nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      },
+      "put": {
+        "summary": "Ažuriraj tim",
+        "tags": ["Teams"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID tima"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tim uspješno ažuriran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Korisnik nema dozvolu za ažuriranje tima"
+          },
+          "404": {
+            "description": "Tim nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Obriši tim",
+        "tags": ["Teams"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID tima"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tim uspješno obrisan"
+          },
+          "403": {
+            "description": "Korisnik nema dozvolu za brisanje tima"
+          },
+          "404": {
+            "description": "Tim nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/teams/{id}/members": {
+      "get": {
+        "summary": "Dohvati članove tima",
+        "tags": ["Team Members"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID tima"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista članova tima",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeamMember"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Korisnik nema pristup timu"
+          },
+          "404": {
+            "description": "Tim nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/teams/invite": {
+      "post": {
+        "summary": "Pozovi korisnika u tim",
+        "tags": ["Team Members"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["teamId", "email"],
+                "properties": {
+                  "teamId": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pozivnica uspješno poslana"
+          },
+          "400": {
+            "description": "Nedostaju obavezna polja ili pogrešni format"
+          },
+          "403": {
+            "description": "Korisnik nema dozvolu za slanje pozivnica"
+          },
+          "404": {
+            "description": "Tim nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    },
+    "/teams/{id}/non-members": {
+      "get": {
+        "summary": "Get all users who are not members of the team",
+        "tags": ["Teams"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Team ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of users who are not team members",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "User ID"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "User email"
+                      },
+                      "fullName": {
+                        "type": "string",
+                        "description": "User's full name"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not a team member"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/teams/{teamId}/members/{memberId}": {
+      "delete": {
+        "summary": "Ukloni člana iz tima",
+        "tags": ["Team Members"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID tima"
+          },
+          {
+            "in": "path",
+            "name": "memberId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID korisnika koji se uklanja iz tima"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Član uspješno uklonjen iz tima",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Member removed from the team successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Pogrešan zahtjev (npr. pokušaj uklanjanja vlasnika tima)"
+          },
+          "401": {
+            "description": "Neautorizirani pristup"
+          },
+          "403": {
+            "description": "Samo vlasnik tima može uklanjati članove"
+          },
+          "404": {
+            "description": "Tim ili član nije pronađen"
+          },
+          "500": {
+            "description": "Serverska greška"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
