@@ -1,3 +1,5 @@
+🔗 [Master's Thesis](https://github.com/GrgoPenava/Master-s-thesis)  
+
 ## 📸 Application Screenshots
 
 ### 🏠 Home
