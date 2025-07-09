@@ -1,5 +1,37 @@
-# Vue 3 + TypeScript + Vite
+## 📸 Application Screenshots
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+### 🏠 Home
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+![Home](screenshots/Home.png)
+
+### ℹ️ About
+
+![About](screenshots/About.png)
+
+### 👤 Account
+
+![Account](screenshots/Account.png)
+
+### 👤 Account (drugi prikaz)
+
+![Account2](screenshots/Account2.png)
+
+### 📋 Board
+
+![Board](screenshots/Board.png)
+
+### ✅ Create Task
+
+![CreateTask](screenshots/CreateTask.png)
+
+### 🛎️ Notifications
+
+![Notifications](screenshots/Notifications.png)
+
+### 👥 Team Management
+
+![TeamManagement](screenshots/TeamManagement.png)
+
+### 🧑‍🤝‍🧑 Choose Team
+
+![ChooseTeam](screenshots/ChooseTeam.png)
